@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { onAuthStateChanged, User } from 'firebase/auth';
-import { auth } from './firebase/config';
+import { auth, firebaseInitError } from './firebase/config';
 import { Auth } from './components/Auth';
 import { Calendar } from './components/Calendar';
 import { TimeSlots } from './components/TimeSlots';
@@ -57,6 +57,11 @@ export function App() {
   const [lastBooked, setLastBooked] = useState<Booking | null>(null);
 
   useEffect(() => {
+    if (firebaseInitError || !auth) {
+      setLoading(false);
+      return;
+    }
+
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
       setLoading(false);
@@ -154,6 +159,22 @@ export function App() {
         <div className="card">
           <div className="card__body" style={{ padding: '40px', textAlign: 'center' }}>
             Loading...
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (firebaseInitError || !auth) {
+    return (
+      <div className="page">
+        <div className="card">
+          <div className="card__body" style={{ padding: '24px' }}>
+            <h2 style={{ margin: '0 0 8px', fontSize: '16px' }}>Firebase configuration error</h2>
+            <div style={{ color: '#6b7280', fontSize: '13px', lineHeight: 1.4 }}>
+              {firebaseInitError?.message ||
+                'Firebase could not be initialized. Check your Firebase env vars / GitHub secrets and redeploy.'}
+            </div>
           </div>
         </div>
       </div>

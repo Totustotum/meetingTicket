@@ -7,16 +7,22 @@ import {
   Timestamp,
   QueryConstraint,
 } from 'firebase/firestore';
-import { db } from '../firebase/config';
+import { db, firebaseInitError } from '../firebase/config';
 import { Booking } from '../types';
 
 const BOOKINGS_COLLECTION = 'bookings';
+
+function requireDb() {
+  if (firebaseInitError) throw firebaseInitError;
+  if (!db) throw new Error('Firestore is not initialized.');
+  return db;
+}
 
 /**
  * Save a booking to Firestore
  */
 export async function saveBooking(booking: Omit<Booking, 'id'>): Promise<string> {
-  const docRef = await addDoc(collection(db, BOOKINGS_COLLECTION), {
+  const docRef = await addDoc(collection(requireDb(), BOOKINGS_COLLECTION), {
     ...booking,
     createdAt: Timestamp.fromDate(new Date(booking.createdAtIso)),
     startsAt: Timestamp.fromDate(new Date(booking.startsAtIso)),
@@ -29,7 +35,7 @@ export async function saveBooking(booking: Omit<Booking, 'id'>): Promise<string>
  */
 export async function isSlotBooked(startsAtIso: string): Promise<boolean> {
   const q = query(
-    collection(db, BOOKINGS_COLLECTION),
+    collection(requireDb(), BOOKINGS_COLLECTION),
     where('startsAtIso', '==', startsAtIso)
   );
   const snapshot = await getDocs(q);
@@ -41,7 +47,7 @@ export async function isSlotBooked(startsAtIso: string): Promise<boolean> {
  */
 export async function getUserBookings(userId: string): Promise<Booking[]> {
   const q = query(
-    collection(db, BOOKINGS_COLLECTION),
+    collection(requireDb(), BOOKINGS_COLLECTION),
     where('userId', '==', userId)
   );
   const snapshot = await getDocs(q);
@@ -64,7 +70,7 @@ export async function getUserBookings(userId: string): Promise<Booking[]> {
  * Get all bookings (for checking availability)
  */
 export async function getAllBookings(): Promise<Booking[]> {
-  const snapshot = await getDocs(collection(db, BOOKINGS_COLLECTION));
+  const snapshot = await getDocs(collection(requireDb(), BOOKINGS_COLLECTION));
   
   return snapshot.docs.map((doc) => {
     const data = doc.data();
