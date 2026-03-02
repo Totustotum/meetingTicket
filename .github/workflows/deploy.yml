@@ -24,13 +24,32 @@ jobs:
       - name: Check Firebase secrets
         run: |
           missing=0
-          for k in VITE_FIREBASE_API_KEY VITE_FIREBASE_AUTH_DOMAIN VITE_FIREBASE_PROJECT_ID VITE_FIREBASE_STORAGE_BUCKET VITE_FIREBASE_MESSAGING_SENDER_ID VITE_FIREBASE_APP_ID; do
-            v="${{ secrets[format('{0}', k)] }}"
-            if [ -z "$v" ]; then
-              echo "::error::Missing required secret: $k"
-              missing=1
-            fi
-          done
+
+          if [ -z "${{ secrets.VITE_FIREBASE_API_KEY }}" ]; then
+            echo "::error::Missing required secret: VITE_FIREBASE_API_KEY"
+            missing=1
+          fi
+          if [ -z "${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}" ]; then
+            echo "::error::Missing required secret: VITE_FIREBASE_AUTH_DOMAIN"
+            missing=1
+          fi
+          if [ -z "${{ secrets.VITE_FIREBASE_PROJECT_ID }}" ]; then
+            echo "::error::Missing required secret: VITE_FIREBASE_PROJECT_ID"
+            missing=1
+          fi
+          if [ -z "${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}" ]; then
+            echo "::error::Missing required secret: VITE_FIREBASE_STORAGE_BUCKET"
+            missing=1
+          fi
+          if [ -z "${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}" ]; then
+            echo "::error::Missing required secret: VITE_FIREBASE_MESSAGING_SENDER_ID"
+            missing=1
+          fi
+          if [ -z "${{ secrets.VITE_FIREBASE_APP_ID }}" ]; then
+            echo "::error::Missing required secret: VITE_FIREBASE_APP_ID"
+            missing=1
+          fi
+
           if [ "$missing" -ne 0 ]; then
             echo "::error::Add the missing secrets in Settings → Secrets and variables → Actions, then push a commit to redeploy."
             exit 1
