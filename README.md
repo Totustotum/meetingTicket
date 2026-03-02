@@ -106,10 +106,12 @@ export default defineConfig({
 ### 2. Set up GitHub Pages
 
 1. Push your code to GitHub
-2. Go to repository Settings > Pages
-3. Source: Deploy from a branch
-4. Branch: `gh-pages` (will be created automatically)
-5. Folder: `/ (root)`
+2. Go to repository **Settings → Pages**
+3. **Source:** Deploy from a branch
+4. **Branch:** `gh-pages` (created by the workflow; do **not** use `main` or the site will be blank)
+5. **Folder:** `/ (root)` → Save
+
+**If the live site is blank:** Ensure Pages uses the **gh-pages** branch (not main). Add the six Firebase secrets under **Settings → Secrets and variables → Actions** so the workflow can build; then push a commit to re-run the workflow.
 
 ### 3. Deploy
 
@@ -179,3 +181,4 @@ scheduling-app/
 ## License
 
 MIT
+Last updated: March 1, 2026
