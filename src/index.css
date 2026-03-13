@@ -200,16 +200,25 @@ body {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 6px;
+  justify-items: center;
+  align-items: center;
 }
 
 .day-btn {
+  width: 40px;
   height: 40px;
-  border-radius: 999px;
+  min-width: 40px;
+  min-height: 40px;
+  padding: 0;
+  border-radius: 50%;
   border: 1px solid transparent;
   background: transparent;
   cursor: pointer;
   font-size: 13px;
   color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 .day-btn:hover {
   background: #f3f4f6;
@@ -442,6 +451,14 @@ body {
   text-align: center;
 }
 
+.auth-card__subtitle {
+  margin: 0 0 20px;
+  font-size: 14px;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.4;
+}
+
 .auth-card__tabs {
   display: flex;
   gap: 8px;
@@ -490,6 +507,38 @@ body {
   background: #fee;
   color: var(--accent);
   font-size: 13px;
+}
+
+.auth-card__message {
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: #e8f5e9;
+  color: #2e7d32;
+  font-size: 13px;
+}
+
+.auth-card__forgot {
+  margin-top: -4px;
+}
+
+.auth-card__forgot-link {
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.auth-card__forgot-link:hover {
+  color: var(--accent-2);
+}
+
+.auth-card__forgot-link:focus {
+  outline: none;
+  box-shadow: var(--focus);
+  border-radius: 4px;
 }
 
 .user-info {

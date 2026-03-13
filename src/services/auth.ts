@@ -2,6 +2,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
+  sendPasswordResetEmail,
   User,
 } from 'firebase/auth';
 import { auth, firebaseInitError } from '../firebase/config';
@@ -24,4 +25,9 @@ export async function signIn(email: string, password: string): Promise<User> {
 
 export async function logOut(): Promise<void> {
   await signOut(requireAuth());
+}
+
+/** Send a password reset email to the given address. */
+export async function resetPassword(email: string): Promise<void> {
+  await sendPasswordResetEmail(requireAuth(), email);
 }
